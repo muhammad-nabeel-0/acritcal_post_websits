@@ -60,6 +60,7 @@ useEffect(() => {
             <SunEditor
               value={content}
               ref={editorRef}
+              height='400'
               
               onChange={(value) => setContent(value)}
               
