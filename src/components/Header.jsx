@@ -70,10 +70,10 @@ const Header = () => {
             <div className='ml-0 mt-4 sm:mt-0 sm:ml-5 w-full sm:w-auto flex justify-center sm:block'> {/* Centered on mobile */}
               <div>
                 <div className="relative group transition-all">
-                  <img className="h-10 w-10 sm:h-14 sm:w-14 object-cover rounded-full"
+                  <img className="h-10 w-10 sm:h-14 sm:w-14 object-cover rounded-full border-2 border-blue-400 p-[2px]"
                     src={userData?.prefs?.profileImage || assets.profile_icon}
                     alt="userImage1" />
-                  <div className='absolute hidden group-hover:block transition-all top-12 sm:top-15 right-0 w-40 px-2 py-1 rounded bg-gray-200'>
+                  <div className='absolute hidden group-hover:block transition-all top-12 sm:top-15 right-0 w-40 px-2 py-1 rounded bg-gray-200 border-2'>
                     <ul>
                       <Link to={"/profile"} onClick={() => setIsMobileMenuOpen(false)}><li className='hover:bg-gray-300 my-2 px-2 py-1 cursor-pointer'>My Profile</li></Link>
                       <li onClick={() => { logoutFunction(); setIsMobileMenuOpen(false); }} className='hover:bg-gray-300 my-2 px-2 py-1 cursor-pointer'>Logout</li>

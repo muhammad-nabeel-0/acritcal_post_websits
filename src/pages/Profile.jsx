@@ -18,7 +18,7 @@ const UserProfilePage = () => {
   if (!user) return <div className="text-center py-20 text-gray-500 text-lg">Loading profile...</div>;
 
   return (
-    <div className=" bg-gradient-to-br from-blue-50 to-white flex justify-center items-center px-4">
+    <div className="  flex justify-center items-center px-4">
       <div className="w-full max-w-3xl p-8 bg-white rounded-3xl shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-gray-200">
         <div className="flex flex-col items-center gap-6">
           {/* Profile Image */}
@@ -26,7 +26,7 @@ const UserProfilePage = () => {
             <img
               src={user?.prefs?.profileImage || assets.profile_icon}
               alt="User Avatar"
-              className="w-40 h-40 object-cover rounded-full border-4 border-blue-400 shadow-md"
+              className="w-40 h-40 object-cover rounded-full border-4 p-1 border-blue-400 shadow-md"
             />
           </div>
 

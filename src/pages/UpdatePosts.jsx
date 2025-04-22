@@ -58,7 +58,7 @@ const UpdatePost = () => {
           id="postTitle"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-800 dark:text-white"
+          className="w-full p-3 border border-gray-300 rounded-lg "
         />
       </div>
 

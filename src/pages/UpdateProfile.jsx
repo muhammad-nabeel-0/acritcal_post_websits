@@ -34,7 +34,7 @@ const UpdateProfile = () => {
   if (!user) return <div className="text-center py-20">Loading Profile...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-center px-4">
+    <div className=" flex justify-center items-center px-4">
       <div className="w-full max-w-xl bg-white p-8 rounded-3xl shadow-xl border border-gray-200">
         <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Update Profile</h1>
 
