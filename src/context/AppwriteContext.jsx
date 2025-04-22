@@ -15,34 +15,15 @@ export const AppWriteContextProvider = ({children})=>{
     const storge = new Storage(client)
     const db = new Databases(client)
     const [userData,setUserData] = useState(null)
+    
 
     
     // ====================================== create account function ===============================================
-    const createAccount = async ({ email, password, name, imageFile }) => {
+    const createAccount = async ({ email, password, name }) => {
         try {
-          // Step 1: Create the user account
           const res = await account.create(ID.unique(), email, password, name);
-      
-          // Step 2: Log the user in (necessary to call updatePrefs)
           await account.createEmailPasswordSession(email, password);
-      
-          // Step 3: Upload profile image
-          let imageUrl = "";
-          if (imageFile) {
-            const upload = await storge.createFile(appWriteBacketId, ID.unique(), imageFile);
-            imageUrl = storge.getFileView(appWriteBacketId, upload.$id).href;
-          }
-      
-          // Step 4: Update user prefs (must be logged in to call this)
-          await account.updatePrefs({ profileImage: imageUrl });
-      
-          // Step 5: Fetch updated user info
-          const updatedUser = await account.get();
-          setUserData(updatedUser);
-      
-          toast.success("Account created successfully!");
-          return { ...res, imageUrl };
-      
+          toast.success("Create Account Successfully!")
         } catch (error) {
           console.log("Account creation error:", error);
           toast.error(error.message);
@@ -67,7 +48,7 @@ export const AppWriteContextProvider = ({children})=>{
 
     const addPost = async ({ title, content, category, image,author })=>{
         try {
-            // 1. Upload image to Appwrite bucket
+            
             const imageUploadRes = await storge.createFile(
               appWriteBacketId, // 👈 Replace with your bucket ID
               ID.unique(),
@@ -93,7 +74,7 @@ export const AppWriteContextProvider = ({children})=>{
                 postTitle: title,
                 content: content,
                 category: category,
-                postImage: imagePreviewUrl, // 👈 Save preview URL or file ID
+                postImage: imagePreviewUrl,
                 author: author,
                 uploadDate: postDate.toLocaleDateString(),
                 userID:userId
@@ -167,39 +148,67 @@ const getUserInfo = async () => {
     }
   };
   
-  // =================== Update name ===================
-  const updateUserName = async (name) => {
+ 
+  const updateProfile = async (name, imageFile) => {
     try {
-      const res = await account.updateName(name);
-      toast.success("Name updated successfully");
-      return res;
+      let profileImageURL = null;
+  
+      // Upload new image if provided
+      if (imageFile) {
+        const uploadedFile = await storge.createFile(appWriteBacketId, ID.unique(), imageFile);
+        profileImageURL = storge.getFileView(appWriteBacketId, uploadedFile.$id);
+      }
+  
+      // Update name if provided
+      if (name.trim()) {
+        await account.updateName(name);
+      }
+  
+      // Update user preferences with image
+      const updatedPrefs = {
+        ...(profileImageURL && { profileImage: profileImageURL }),
+      };
+  
+      if (Object.keys(updatedPrefs).length > 0) {
+        await account.updatePrefs(updatedPrefs);
+      }
+  
+      // Get latest user info after update
+      const updatedUser = await account.get();
+      return updatedUser;
+  
     } catch (error) {
-      toast.error("Failed to update name");
-      console.log(error);
+      console.error("Error updating profile:", error);
+      throw error;
     }
   };
   
-// ================== Upload Profile Pic ==================
-const uploadProfileImage = async (file) => {
+
+  const updatePrefs = async (image)=>{
     try {
-      const uploaded = await storge.createFile(appWriteBacketId, ID.unique(), file);
-      const imageUrl = storge.getFileView(appWriteBacketId, uploaded.$id).href;
-      console.log(imageUrl);
+      const res = await account.updatePrefs({user:userAccountInfo,status:"ok",theme:"Dark",userImage:image})
+      console.log(res);
+      toast.success("Function is Correct")
+      return res
       
-      await account.updatePrefs({ profileImage: imageUrl });
-      toast.success("Profile image updated");
-      return imageUrl;
     } catch (error) {
-      toast.error("Failed to upload image");
+      toast.error(error.message)
       console.log(error);
+      
+      
     }
-  };
+  }
+
+  // AppwriteContext.js
+
+
+
   
     const [isLoading, setIsLoading] = useState(false);
     const allValuse = {
         account,createAccount,loginAccount,addPost,listData,startLoading,stopLoading,isLoading,userAccountInfo,
-        db,appWriteDataBaseId, appWriteCollectionId,logoutFunction,userData,getUserInfo, updateUserName,uploadProfileImage,
-        appWriteBacketId,storge,ID
+        db,appWriteDataBaseId, appWriteCollectionId,logoutFunction,userData,getUserInfo,
+        appWriteBacketId,storge,ID,updatePrefs,updateProfile
         
     }
     return(

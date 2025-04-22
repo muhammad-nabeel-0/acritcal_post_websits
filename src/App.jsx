@@ -12,9 +12,8 @@ import { useEffect } from 'react';
 import ArticleDetail from './pages/ArticleDetail';
 import UserPosts from './pages/UserPosts';
 import UpdatePost from './pages/UpdatePosts';
-import MyProfile from './pages/UpdateProfile';
-import UpdateProfile from './pages/UpdateProfile';
-import ProfilePage from './pages/MyProfile';
+import UserProfilePage from './pages/Profile';
+import UpdateProfile from './pages/UpdateProfile'
 
 function App() {
   const {userAccountInfo} = useAppWrite()
@@ -35,8 +34,10 @@ function App() {
           <Route path="/my-post" element={<UserPosts />} />
            <Route path="/update-post/:id" element={<UpdatePost />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile/update" element={<UpdateProfile />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<UserProfilePage/>} />
+          <Route path="/update-profile" element={<UpdateProfile/>} />
+          
+          
 
 
         </Routes>

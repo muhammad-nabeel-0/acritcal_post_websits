@@ -8,6 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+ const [showPassword, setShowPassword] = useState(false);
   const { createAccount } = useAppWrite();
   const [imageFile, setImageFile] = useState(null);
    const [preview, setPreview] = useState(null);
@@ -19,13 +20,10 @@ const Signup = () => {
     const imageUrl = URL.createObjectURL(file);
     setPreview(imageUrl);
     setImageFile(file);
-  
-    console.log("Selected file:", file); // This will show the correct file object
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let res = await createAccount({email, password, name, imageFile})
-    console.log(res);
     
     console.log("Uploading this file:", imageFile);
     setEmail("");
@@ -33,6 +31,7 @@ const Signup = () => {
     setName("");
     setPassword("");
     navigate("/");
+    console.log(res);
   };
 
   return (
@@ -112,7 +111,7 @@ const Signup = () => {
               <input
                 id="password"
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 placeholder="Your Password"
                 value={password}
@@ -120,7 +119,7 @@ const Signup = () => {
               />
             </div>
             <div className='flex items-center justify-between'>
-              <label className='text-sm text-gray-600'>
+              <label onClick={() => setShowPassword(!showPassword)} className='text-sm text-gray-600'>
                 <input className='mr-2 leading-tight' type="checkbox" />
                 Show password
               </label>
